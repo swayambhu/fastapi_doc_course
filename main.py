@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from pydantic import BaseModel
 from enum import Enum
 from typing import Union
@@ -50,3 +50,21 @@ async def get_data(skip: int = 0, limit: int = 10):
 @app.put("/user_data/")
 async def get_user_data(data: UserData):
     return {"user_data": data}
+
+@app.get('/query_parameters/')
+async def read_items(
+    q: Union[str, None] = Query(
+        default=None,
+        alias="item-query",
+        title="Query string",
+        description="Query string for the items to search in the database that have a good match",
+        min_length=3,
+        max_length=50,
+        regex="^fixedquery$",
+        deprecated=True,
+    )
+):
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
