@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Path
 from pydantic import BaseModel
 from enum import Enum
 from typing import Union
@@ -68,3 +68,7 @@ async def read_items(
     if q:
         results.update({"q": q})
     return results
+
+@app.get('/numbers/{q}')
+async def get_numbers(q: int = Path(gt=0, lt=100)):
+    return q
