@@ -71,4 +71,4 @@ async def read_items(
 
 @app.get('/numbers/{q}')
 async def get_numbers(q: int = Path(gt=0, lt=100)):
-    return q
+    return q 
